@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -13,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.ramiro.krogerbenchlc.data.model.Breedmodel
@@ -34,12 +37,16 @@ fun CatScreen(viewModel: CatsViewModel, modifier: Modifier){
         }
         is UiState.SUCCESS -> {
             val listResults: List<CatsModelItemmodel> = state.response
-            LazyColumn {
+            LazyColumn(modifier.fillMaxSize()) {
                 items(listResults){ cat ->
-                    Card {
+                    Card(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
                         AsyncImage(model = cat.url, contentDescription = "Cat image")
-                        Text(text = cat.id!!)
-                        Text(text = "${cat.breeds}")
+                        Text(text = "Cat ID: ${cat.id!!}")
+                        Text(text = "Breed ID: ${cat.breeds?.get(0)?.id}")
+                        Text(text = "Name: ${cat.breeds?.get(0)?.name}")
+                        Text(text = "Description: ${cat.breeds?.get(0)?.description}")
+                        Text(text = "Lifespan: ${cat.breeds?.get(0)?.lifeSpan}")
+
                     }
                 }
             }
